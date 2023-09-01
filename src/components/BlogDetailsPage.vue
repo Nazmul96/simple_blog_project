@@ -1,38 +1,34 @@
 <script setup>
     import { useRoute } from 'vue-router';
-    import { watch, ref, onMounted } from 'vue';
+    import { watch, ref, onMounted, onBeforeMount } from 'vue';
     import axios from 'axios';
 
     const blogDetails = ref('');
     const route  = useRoute();
     const id     = route.params.id;
 
-    const url = `https://basic-blog.teamrabbil.com/api/post-details/${id}`;
 
-    onMounted (() => {
-        axios.get(url) 
-        .then(function(response) {   
-            if(response.data){
-                blogDetails.value = response.data;
-                console.log(blogDetails.value.postDetails.img);
-            }
-        })
-        .catch(function(error) {
-            console.error(error);
-        });
-  });
+
+    fetch(`https://basic-blog.teamrabbil.com/api/post-details/${id}`)
+    .then(response => response.json())
+    .then(data => blogDetails.value = data)
+    .catch(error => {
+        console.log(error)
+    });
+   
 
 </script>
 
 <template>
   <div class="container">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-5">
-            <p>{{ blogDetails.value.postDetails.img }}</p>
-                <div class="card col-md-12" style="width: 18rem;">
-                  
-                    <div class="card-body">
-                     </div>   
-                </div>
+        <div class="row mt-5  col-md-12">
+            <div class="card">
+                <img :src="blogDetails.postDetails.img" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h3>{{ blogDetails.postDetails.title }}</h3>
+                    <p>{{ blogDetails.postDetails.content}}</p>
+                </div> 
+            </div>
         </div>
   </div>
 </template>
