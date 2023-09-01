@@ -22,13 +22,17 @@
 <template>
   <div class="container">
         <div class="row mt-5  col-md-12">
-            <div class="card">
+            <div class="card" v-if="blogDetails.postDetails">
                 <img :src="blogDetails.postDetails.img" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h3>{{ blogDetails.postDetails.title }}</h3>
                     <p>{{ blogDetails.postDetails.content}}</p>
                 </div> 
             </div>
+            <div class="text-center" v-if="!blogDetails.postDetails">
+                    <h4>No Data Found</h4>
+            </div>
+            
         </div>
   </div>
 </template>
