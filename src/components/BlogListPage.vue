@@ -1,32 +1,24 @@
 <script setup>
   import { useRoute } from 'vue-router';
   import { watch, ref, onMounted } from 'vue';
-  import axios from 'axios';
 
   const blogList = ref('');
   const route  = useRoute();
-  const id     = ref('');
-  id.value     = route.params.id;
- 
-//   watch(() => route.params.id, (newId, oldId) => {
-//         id.value = newId;
-//   });
 
-  const url = `https://basic-blog.teamrabbil.com/api/post-list/${id.value}`
-     
-  onMounted (() => {
-        axios.get(url) 
-        .then(function(response) {   
-            if(response.data){
-                blogList.value = response.data;
-                console.log(blogList.value);
-            }
+  const getBlog = () => {
+    fetch(`https://basic-blog.teamrabbil.com/api/post-list/${route.params.id}`)
+        .then(response => response.json())
+        .then(data => {
+            blogList.value = data;
         })
-        .catch(function(error) {
-            console.error(error);
+        .catch(error => {
+            console.log(error)
         });
-  });
+    }
 
+  watch(() => route.params.id, () => {
+        getBlog()
+  }, {immediate: true})
 
 </script>
 
