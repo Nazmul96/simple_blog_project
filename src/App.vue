@@ -6,7 +6,7 @@ import NavbarPage from './components/NavbarPage.vue'
 
 <template>
   <NavbarPage/>
-  <RouterView />
+  <RouterView :key="$route.fullPath"/>
 </template>
 
 <style scoped>
